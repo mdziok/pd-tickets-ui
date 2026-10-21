@@ -1,0 +1,49 @@
+<main class="page">
+  <section class="panel">
+    <div class="eyebrow">INTEGRACJA REST API</div>
+    <h1>Wysyłanie danych</h1>
+    <p class="intro">Wpisz wiadomość i wyślij ją do zewnętrznej aplikacji przez HTTP REST.</p>
+
+    <form (ngSubmit)="sendMessage()">
+      <label for="message">Treść wiadomości</label>
+      <textarea
+        id="message"
+        name="message"
+        [(ngModel)]="message"
+        placeholder="Wpisz tekst, który chcesz przesłać…"
+        rows="6"
+        maxlength="10000"
+        required
+      ></textarea>
+      <div class="meta">{{ message.length }} / 10000 znaków</div>
+
+      <button type="submit" [disabled]="!message.trim() || loading">
+        @if (loading) {
+          <span class="spinner" aria-hidden="true"></span>
+          Wysyłanie…
+        } @else {
+          Wyślij wiadomość
+          <span aria-hidden="true">→</span>
+        }
+      </button>
+    </form>
+
+    @if (status) {
+      <section class="result" [class.success]="statusType === 'success'"
+        [class.error]="statusType === 'error'" [class.info]="statusType === 'info'"
+        role="status" aria-live="polite">
+        <strong>{{ status }}</strong>
+        @if (responseDetails) {
+          <pre>{{ responseDetails }}</pre>
+        }
+      </section>
+    }
+
+<!--    <div class="endpoint">-->
+<!--      <span class="endpoint-label">Endpoint</span>-->
+<!--      <code>POST {{ apiEndpoint }}</code>-->
+<!--      <span class="endpoint-note">{{ '{ "message": "…" }' }}</span>-->
+<!--    </div>-->
+  </section>
+  <footer>Angular · HTTP Client · REST</footer>
+</main>
