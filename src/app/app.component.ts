@@ -34,7 +34,7 @@ export class AppComponent {
     this.statusType = 'info';
     this.responseDetails = '';
 
-    this.http.post<unknown>(this.apiUrl, { message: text, user: "user", send_time: Date.now()}).subscribe({
+    this.http.post<unknown>(this.apiUrl, { message: text}).subscribe({
       next: (response) => {
         this.status = 'Dane zostały wysłane pomyślnie.';
         this.statusType = 'success';
