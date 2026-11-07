@@ -1,0 +1,16 @@
+<main class="page">
+  <section class="tickets-section">
+    <h2>Moje zgłoszenia</h2>
+
+    @for (ticket of tickets; track ticket.id) {
+      <article class="ticket-card">
+        <h3>Zgłoszenie #{{ ticket.id }}</h3>
+        <p>{{ ticket.message }}</p>
+        <p>Kategoria: {{ ticket.category ?? 'Oczekuje na analizę' }}</p>
+        <p>Wysłano: {{ ticket.sendTime | date:'dd.MM.yyyy HH:mm' }}</p>
+      </article>
+    } @empty {
+      <p>Nie masz jeszcze żadnych zgłoszeń.</p>
+    }
+  </section>
+</main>

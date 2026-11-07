@@ -1,49 +1,26 @@
-<main class="page">
-  <section class="panel">
-    <div class="eyebrow">INTEGRACJA REST API</div>
-    <h1>Wysyłanie danych</h1>
-    <p class="intro">Wpisz wiadomość i wyślij ją do zewnętrznej aplikacji przez HTTP REST.</p>
+<header class="app-header">
+  <div class="header-content">
 
-    <form (ngSubmit)="sendMessage()">
-      <label for="message">Treść wiadomości</label>
-      <textarea
-        id="message"
-        name="message"
-        [(ngModel)]="message"
-        placeholder="Wpisz tekst, który chcesz przesłać…"
-        rows="6"
-        maxlength="10000"
-        required
-      ></textarea>
-      <div class="meta">{{ message.length }} / 10000 znaków</div>
+    <a class="brand" routerLink="/dashboard">
+      <span class="brand-icon">PD</span>
+      <div class="brand-text">
+        <span class="brand-name">System zgłoszeń</span>
+        <span class="brand-tagline">Programowanie defensywne</span>
+      </div>
+    </a>
 
-      <button type="submit" [disabled]="!message.trim() || loading">
-        @if (loading) {
-          <span class="spinner" aria-hidden="true"></span>
-          Wysyłanie…
-        } @else {
-          Wyślij wiadomość
-          <span aria-hidden="true">→</span>
-        }
+    <nav class="app-nav" aria-label="Nawigacja główna">
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/tickets">Moje zgłoszenia</a>
+      <a routerLink="/tickets/new" class="nav-cta">
+        + Dodaj zgłoszenie
+      </a>
+      <button type="button" class="nav-logout" (click)="logout()">
+        Wyloguj
       </button>
-    </form>
+    </nav>
 
-    @if (status) {
-      <section class="result" [class.success]="statusType === 'success'"
-        [class.error]="statusType === 'error'" [class.info]="statusType === 'info'"
-        role="status" aria-live="polite">
-        <strong>{{ status }}</strong>
-        @if (responseDetails) {
-          <pre>{{ responseDetails }}</pre>
-        }
-      </section>
-    }
+  </div>
+</header>
 
-<!--    <div class="endpoint">-->
-<!--      <span class="endpoint-label">Endpoint</span>-->
-<!--      <code>POST {{ apiEndpoint }}</code>-->
-<!--      <span class="endpoint-note">{{ '{ "message": "…" }' }}</span>-->
-<!--    </div>-->
-  </section>
-  <footer>Angular · HTTP Client · REST</footer>
-</main>
+<router-outlet></router-outlet>
