@@ -47,3 +47,17 @@
   </section>
   <footer>Angular · HTTP Client · REST</footer>
 </main>
+
+<section class="tickets-section">
+  <h2>Moje zgłoszenia</h2>
+
+  @for (ticket of tickets; track ticket.id) {
+    <div class="ticket-card">
+      <p>{{ ticket.message }}</p>
+      <p>Kategoria: {{ ticket.category || 'Oczekuje' }}</p>
+      <p>Data: {{ ticket.sendTime | date:'dd.MM.yyyy, HH:mm' }}</p>
+    </div>
+  } @empty {
+    <p>Nie masz jeszcze żadnych zgłoszeń.</p>
+  }
+</section>

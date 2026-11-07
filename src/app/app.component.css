@@ -166,3 +166,30 @@ footer {
 @media (max-width: 480px) {
   .page { margin-top: 24px; }
 }
+
+.tickets-section {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 32px;
+}
+
+.tickets-section h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #172033;
+}
+
+.ticket-card {
+  padding: 20px;
+  margin-bottom: 16px;
+  background: #fff;
+  border: 1px solid #e1e6ef;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgb(25 42 70 / 5%);
+}
+
+.ticket-card p {
+  margin: 8px 0;
+  color: #34415c;
+  line-height: 1.5;
+}
