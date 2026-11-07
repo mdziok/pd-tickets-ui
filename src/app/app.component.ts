@@ -1,20 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+
+interface Ticket {
+  id: number;
+  message: string;
+  username: string;
+  sendTime: string;
+  processedAt: string;
+  category: string | null;
+}
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    console.log('START Angular — ngOnInit działa!');
+    this.loadTickets();
+  }
   message = '';
   status = '';
   statusType: 'success' | 'error' | 'info' = 'info';
   loading = false;
   responseDetails = '';
+  tickets: Ticket[] = [];
 
   // Zmień adres na endpoint docelowej aplikacji REST.
   private readonly apiUrl = 'http://localhost:8080/api/messages';
@@ -50,6 +65,18 @@ export class AppComponent {
         this.loading = false;
       }
     });
+  }
+
+  loadTickets(): void {
+    this.http.get<Ticket[]>('http://localhost:8080/api/tickets').subscribe({
+      next: (response) => {
+        this.tickets = response;
+        console.log('Pobrane zgłoszenia:', response);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Błąd pobierania zgłoszeń:', error);
+      }
+      });
   }
 
   private formatResponse(response: unknown): string {
