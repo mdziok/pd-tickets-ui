@@ -1,16 +1,115 @@
 <main class="page">
   <section class="tickets-section">
-    <h2>Moje zgłoszenia</h2>
+    <h2>{{ canManageTickets ? 'Wszystkie zgłoszenia' : 'Moje zgłoszenia' }}</h2>
 
-    @for (ticket of tickets; track ticket.id) {
+
+    @if (canManageTickets) {
+      <div class="ticket-filters">
+        <input
+          type="text"
+          placeholder="Szukaj po treści, ID lub autorze..."
+          [(ngModel)]="searchTerm"
+        />
+
+        <select [(ngModel)]="selectedStatus">
+          <option value="">Wszystkie statusy</option>
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ statusLabels[status] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="selectedPriority">
+          <option value="">Wszystkie priorytety</option>
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priorityLabels[priority] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="selectedCategory">
+          <option value="">Wszystkie kategorie</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ categoryLabels[category] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="sortOrder">
+          <option value="newest">Najnowsze</option>
+          <option value="oldest">Najstarsze</option>
+        </select>
+      </div>
+
+      <p class="ticket-count">
+        Znaleziono zgłoszeń: {{ filteredTickets.length }}
+      </p>
+    }
+
+    @if (errorMessage) {
+      <p class="result error">{{ errorMessage }}</p>
+    }
+
+    @for (ticket of filteredTickets; track ticket.id) {
       <article class="ticket-card">
-        <h3>Zgłoszenie #{{ ticket.id }}</h3>
-        <p>{{ ticket.message }}</p>
-        <p>Kategoria: {{ ticket.category ?? 'Oczekuje na analizę' }}</p>
-        <p>Wysłano: {{ ticket.sendTime | date:'dd.MM.yyyy HH:mm' }}</p>
+        <div class="ticket-header">
+          <h3>Zgłoszenie #{{ ticket.id }}</h3>
+          <span class="ticket-category">
+            {{ ticket.category
+                ? (categoryLabels[ticket.category] ?? ticket.category)
+                : 'Oczekuje na analizę' }}
+          </span>
+        </div>
+
+        <p class="ticket-message">{{ ticket.message }}</p>
+
+        <p class="ticket-author">
+          <strong>Zgłoszone przez:</strong> {{ ticket.username }}
+        </p>
+
+        <div class="ticket-details">
+          @if (canManageTickets) {
+            <label>
+              Status
+              <select
+                #statusSelect
+                [ngModel]="ticket.status"
+                [disabled]="savingIds.has(ticket.id)"
+                (change)="updateStatus(ticket, statusSelect.value)">
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ statusLabels[status] }}</option>
+                }
+              </select>
+            </label>
+
+            <label>
+              Priorytet
+              <select
+                #prioritySelect
+                [ngModel]="ticket.priority"
+                [disabled]="savingIds.has(ticket.id)"
+                (change)="updatePriority(ticket, prioritySelect.value)">
+                @for (priority of priorities; track priority) {
+                  <option [value]="priority">{{ priorityLabels[priority] }}</option>
+                }
+              </select>
+            </label>
+          } @else {
+            <div class="ticket-readonly">
+              <span>Status: <strong>{{ statusLabels[ticket.status] }}</strong></span>
+              <span>Priorytet: <strong>{{ priorityLabels[ticket.priority] }}</strong></span>
+            </div>
+          }
+        </div>
+
+
+        <div class="ticket-footer">
+          Zgłoszenie dodano: {{ ticket.sendTime | date:'dd.MM.yyyy HH:mm' }}
+
+          @if (savingIds.has(ticket.id)) {
+            <span>Zapisywanie...</span>
+          }
+        </div>
       </article>
     } @empty {
-      <p>Nie masz jeszcze żadnych zgłoszeń.</p>
+      <p>Nie znaleziono zgłoszeń.</p>
     }
   </section>
 </main>
