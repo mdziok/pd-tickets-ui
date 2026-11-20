@@ -1,0 +1,25 @@
+
+<header class="app-header">
+    <div class="header-content">
+        <a class="brand" routerLink="/dashboard">
+            <span class="brand-icon">PD</span>
+
+            <div class="brand-text">
+                <span class="brand-name">System zgłoszeń</span>
+                <span class="brand-tagline">Programowanie defensywne</span>
+            </div>
+        </a>
+
+        <nav class="app-nav" aria-label="Nawigacja główna">
+            <a routerLink="/dashboard">Dashboard</a>
+            <a routerLink="/tickets">Moje zgłoszenia</a>
+            <a routerLink="/tickets/new" class="nav-cta">
+                + Dodaj zgłoszenie
+            </a>
+        </nav>
+    </div>
+</header>
+
+<main class="app-main">
+    <router-outlet></router-outlet>
+</main>

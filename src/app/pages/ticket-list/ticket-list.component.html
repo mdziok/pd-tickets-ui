@@ -1,0 +1,120 @@
+<main class="page">
+  <section class="tickets-section">
+    <h2>{{ canManageTickets ? 'Wszystkie zgłoszenia' : 'Moje zgłoszenia' }}</h2>
+
+
+    @if (canManageTickets) {
+      <div class="ticket-filters">
+        <input
+          type="text"
+          placeholder="Szukaj po treści, ID lub autorze..."
+          [(ngModel)]="searchTerm"
+        />
+
+        <select [(ngModel)]="selectedStatus">
+          <option value="">Wszystkie statusy</option>
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ statusLabels[status] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="selectedPriority">
+          <option value="">Wszystkie priorytety</option>
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priorityLabels[priority] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="selectedCategory">
+          <option value="">Wszystkie kategorie</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ categoryLabels[category] }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="sortOrder">
+          <option value="newest">Najnowsze</option>
+          <option value="oldest">Najstarsze</option>
+        </select>
+      </div>
+
+    }
+
+    @if (!loading && !errorMessage) {
+      <p class="ticket-count">
+        {{ canManageTickets ? 'Znaleziono zgłoszeń:' : 'Moje zgłoszenia:' }} {{ filteredTickets.length }}
+      </p>
+    }
+
+    @if (loading) {
+      <p class="result">Ładowanie zgłoszeń...</p>
+    } @else if (errorMessage) {
+      <p class="result error">{{ errorMessage }}</p>
+    } @else if (filteredTickets.length === 0) {
+      <p>Nie znaleziono zgłoszeń.</p>
+    } @else {
+      @for (ticket of filteredTickets; track ticket.id) {
+      <article class="ticket-card">
+        <div class="ticket-header">
+          <h3>Zgłoszenie #{{ ticket.id }}</h3>
+          <span class="ticket-category">
+            {{ ticket.category
+                ? (categoryLabels[ticket.category] ?? ticket.category)
+                : 'Oczekuje na analizę' }}
+          </span>
+        </div>
+
+        <p class="ticket-message">{{ ticket.message }}</p>
+
+        <p class="ticket-author">
+          <strong>Zgłoszone przez:</strong> {{ ticket.username }}
+        </p>
+
+        <div class="ticket-details">
+          @if (canManageTickets) {
+            <label>
+              Status
+              <select
+                #statusSelect
+                [ngModel]="ticket.status"
+                [disabled]="savingIds.has(ticket.id)"
+                (change)="updateStatus(ticket, statusSelect.value)">
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ statusLabels[status] }}</option>
+                }
+              </select>
+            </label>
+
+            <label>
+              Priorytet
+              <select
+                #prioritySelect
+                [ngModel]="ticket.priority"
+                [disabled]="savingIds.has(ticket.id)"
+                (change)="updatePriority(ticket, prioritySelect.value)">
+                @for (priority of priorities; track priority) {
+                  <option [value]="priority">{{ priorityLabels[priority] }}</option>
+                }
+              </select>
+            </label>
+          } @else {
+            <div class="ticket-readonly">
+              <span>Status: <strong>{{ ticket.status ? statusLabels[ticket.status] : 'Nieustawiony' }}</strong></span>
+              <span>Priorytet: <strong>{{ ticket.priority ? priorityLabels[ticket.priority] : 'Nieustawiony' }}</strong></span>
+            </div>
+          }
+        </div>
+
+
+        <div class="ticket-footer">
+          Zgłoszenie dodano: {{ ticket.sendTime | date:'dd.MM.yyyy HH:mm' }}
+
+          @if (savingIds.has(ticket.id)) {
+            <span>Zapisywanie...</span>
+          }
+        </div>
+      </article>
+      }
+    }
+  </section>
+</main>

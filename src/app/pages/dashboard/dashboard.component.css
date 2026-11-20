@@ -1,0 +1,55 @@
+.page {
+  width: min(100% - 32px, 680px);
+  margin: 64px auto 32px;
+}
+
+.panel {
+  padding: clamp(24px, 5vw, 42px);
+  background: #fff;
+  border: 1px solid #e1e6ef;
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgb(25 42 70 / 8%);
+}
+
+.eyebrow {
+  color: #315fe8;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+h1 {
+  margin: 12px 0 10px;
+  font-size: clamp(28px, 5vw, 36px);
+  letter-spacing: -.04em;
+}
+
+.intro {
+  margin: 0;
+  color: #657087;
+  line-height: 1.6;
+}
+
+/* Nowe style — tylko dla statystyki */
+
+.stat-card {
+  margin-top: 30px;
+  padding: 24px;
+  background: #f2f6ff;
+  border: 1px solid #c5d4ff;
+  border-radius: 12px;
+}
+
+.stat-label {
+  color: #34415c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.stat-value {
+  margin: 12px 0 0;
+  color: #315fe8;
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}

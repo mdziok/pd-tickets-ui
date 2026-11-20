@@ -1,0 +1,32 @@
+<main class="page">
+   <form (ngSubmit)="sendMessage()">
+        <label for="message">Treść zgłoszenia</label>
+        <textarea
+        id="message"
+        name="message"
+        [(ngModel)]="message"
+        placeholder="Wpisz tekst, który chcesz przesłać…"
+        rows="6"
+        maxlength="10000"
+        required
+        ></textarea>
+        <div class="meta">{{ message.length }} / 10000 znaków</div>
+
+        <button type="submit" [disabled]="!message.trim() || loading">
+        @if (loading) {
+            <span class="spinner" aria-hidden="true"></span>
+            Wysyłanie…
+        } @else {
+            Wyślij wiadomość
+            <span aria-hidden="true">→</span>
+        }
+        </button>
+    </form>
+
+    @if (status) {
+    <div class="result" [class]="statusType" role="status">
+        <strong>{{ status }}</strong>
+    </div>
+    }
+
+</main>
