@@ -17,7 +17,7 @@ export class TicketCreateComponent {
   loading = false;
   responseDetails = '';
 
-  private readonly apiUrl = 'http://localhost:8080/api/messages';
+  private readonly apiUrl = '/api/messages';
 
   constructor(private readonly http: HttpClient) {}
 

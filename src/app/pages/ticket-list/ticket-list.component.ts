@@ -97,10 +97,11 @@ export class TicketListComponent implements OnInit {
     this.loadTickets();
   }
 
+  private readonly apiUrl = "/api/tickets"
   loadTickets(): void {
     const endpoint = this.canManageTickets
-      ? 'http://localhost:8080/api/tickets/all'
-      : 'http://localhost:8080/api/tickets';
+      ? `${this.apiUrl}/all`
+      : `${this.apiUrl}`;
 
     this.errorMessage = '';
 
@@ -141,7 +142,7 @@ export class TicketListComponent implements OnInit {
     this.savingIds.add(ticket.id);
 
     this.http.patch<Ticket>(
-      `http://localhost:8080/api/tickets/${ticket.id}/${field}`,
+      `${this.apiUrl}/${ticket.id}/${field}`,
       { [field]: value }
     ).subscribe({
       next: () => {
@@ -160,9 +161,9 @@ export class TicketListComponent implements OnInit {
   }
 
   get canManageTickets(): boolean {
-    const roles = keycloak.realmAccess?.roles ?? [];
-
-    return roles.includes('TECHNICIAN') || roles.includes('ADMIN');
+    const resourceAccesses = keycloak.resourceAccess ?? {};
+    const roles = resourceAccesses['pd-tickets-ui'].roles ?? []
+    return roles.includes('technician') || roles.includes('admin');
   }
 
 }

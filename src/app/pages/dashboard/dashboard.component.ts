@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
 
   tickets: Ticket[] = [];
 
+  private readonly apiUrl = '/api/tickets'
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
@@ -20,7 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadTickets(): void {
-    this.http.get<Ticket[]>('http://localhost:8080/api/tickets').subscribe({
+    this.http.get<Ticket[]>(`${this.apiUrl}`).subscribe({
       next: (response) => {
         this.tickets = response;
         console.log('Dashboard - pobrane zgłoszenia:', response);
